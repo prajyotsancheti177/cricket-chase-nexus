@@ -67,12 +67,12 @@ const Auction = () => {
           </div>
           
           <div className="text-right">
-            <div className="text-5xl font-black text-secondary mb-1">
+            <div className="text-8xl font-black text-secondary mb-2">
               ₹{(currentBid / 100000).toFixed(1)}L
             </div>
             {leadingTeam && (
-              <div className="text-lg font-bold text-primary">
-                Leading: {mockTeams.find(t => t.id === leadingTeam)?.name}
+              <div className="text-4xl font-black text-primary mb-1">
+                {mockTeams.find(t => t.id === leadingTeam)?.name}
               </div>
             )}
             <p className="text-sm text-muted-foreground">
@@ -88,24 +88,24 @@ const Auction = () => {
           </div>
 
           {/* Team Bidding Grid */}
-          <Card className="p-6 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated">
-            <h2 className="text-2xl font-bold mb-6 text-foreground text-center">Click on Team to Bid</h2>
+          <Card className="p-3 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated max-w-3xl mx-auto">
+            <h2 className="text-lg font-bold mb-3 text-foreground text-center">Click on Team to Bid</h2>
             
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mb-3">
               {mockTeams.map((team) => (
                 <button
                   key={team.id}
                   onClick={() => handleTeamBid(team.id)}
-                  className={`p-4 rounded-xl border-2 transition-all ${
+                  className={`p-2 rounded-lg border-2 transition-all ${
                     leadingTeam === team.id
                       ? "border-primary bg-primary/20 shadow-glow scale-105"
                       : "border-border hover:border-primary/50 hover:scale-105"
                   }`}
                 >
-                  <div className="text-4xl mb-2">{team.logo}</div>
-                  <p className="font-bold text-xs text-foreground mb-1">{team.name}</p>
+                  <div className="text-2xl mb-1">{team.logo}</div>
+                  <p className="font-bold text-[10px] text-foreground mb-0.5">{team.name}</p>
                   {teamBids[team.id] && (
-                    <p className="text-xs text-primary font-bold">
+                    <p className="text-[9px] text-primary font-bold">
                       ₹{(teamBids[team.id] / 100000).toFixed(1)}L
                     </p>
                   )}
@@ -113,20 +113,20 @@ const Auction = () => {
               ))}
             </div>
 
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-3 justify-center">
               <Button
                 onClick={handleUnsold}
                 variant="outline"
-                size="lg"
-                className="px-12"
+                size="default"
+                className="px-8"
               >
                 Unsold
               </Button>
               <Button
                 onClick={handleSold}
                 disabled={!leadingTeam}
-                size="lg"
-                className="px-12 bg-gradient-accent hover:opacity-90"
+                size="default"
+                className="px-8 bg-gradient-accent hover:opacity-90"
               >
                 Sold!
               </Button>

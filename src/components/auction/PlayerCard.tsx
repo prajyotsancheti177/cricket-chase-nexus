@@ -61,7 +61,7 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
 
       {/* Player Details */}
       <div className="p-6 space-y-4">
-        <h3 className="text-2xl font-bold text-foreground">{player.name}</h3>
+        <h3 className="text-6xl font-black text-foreground text-center">{player.name}</h3>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
