@@ -4,30 +4,28 @@ import { PlayerCard } from "@/components/auction/PlayerCard";
 import { SoldCelebration } from "@/components/auction/SoldCelebration";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Gavel, Plus, Minus } from "lucide-react";
+import { Gavel } from "lucide-react";
 import stadiumBg from "@/assets/stadium-bg.jpg";
 
 const Auction = () => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentBid, setCurrentBid] = useState(mockPlayers[0].basePrice);
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+  const [leadingTeam, setLeadingTeam] = useState<string | null>(null);
+  const [teamBids, setTeamBids] = useState<Record<string, number>>({});
   const [showCelebration, setShowCelebration] = useState(false);
 
   const currentPlayer = mockPlayers[currentPlayerIndex];
   const bidIncrement = 500000;
 
-  const handleBidIncrease = () => {
-    setCurrentBid(prev => prev + bidIncrement);
-  };
-
-  const handleBidDecrease = () => {
-    if (currentBid > currentPlayer.basePrice) {
-      setCurrentBid(prev => prev - bidIncrement);
-    }
+  const handleTeamBid = (teamId: string) => {
+    const newBid = currentBid + bidIncrement;
+    setCurrentBid(newBid);
+    setLeadingTeam(teamId);
+    setTeamBids(prev => ({ ...prev, [teamId]: newBid }));
   };
 
   const handleSold = () => {
-    if (selectedTeam) {
+    if (leadingTeam) {
       setShowCelebration(true);
       setTimeout(() => {
         setShowCelebration(false);
@@ -35,7 +33,8 @@ const Auction = () => {
         if (currentPlayerIndex < mockPlayers.length - 1) {
           setCurrentPlayerIndex(prev => prev + 1);
           setCurrentBid(mockPlayers[currentPlayerIndex + 1].basePrice);
-          setSelectedTeam(null);
+          setLeadingTeam(null);
+          setTeamBids({});
         }
       }, 4000);
     }
@@ -45,7 +44,8 @@ const Auction = () => {
     if (currentPlayerIndex < mockPlayers.length - 1) {
       setCurrentPlayerIndex(prev => prev + 1);
       setCurrentBid(mockPlayers[currentPlayerIndex + 1].basePrice);
-      setSelectedTeam(null);
+      setLeadingTeam(null);
+      setTeamBids({});
     }
   };
 
@@ -60,105 +60,78 @@ const Auction = () => {
 
       <div className="relative container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center gap-3 mb-4 px-6 py-3 rounded-full bg-card border-2 border-primary shadow-glow">
+        <div className="flex justify-between items-center mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-card border-2 border-primary shadow-glow">
             <Gavel className="h-6 w-6 text-primary animate-glow-pulse" />
-            <span className="text-xl font-bold text-foreground">Live Auction</span>
+            <span className="text-xl font-bold text-foreground">Live Auction - Player #{currentPlayerIndex + 1}</span>
           </div>
-          <h1 className="text-5xl font-black bg-gradient-primary bg-clip-text text-transparent">
-            Player #{currentPlayerIndex + 1}
-          </h1>
+          
+          <div className="text-right">
+            <div className="text-5xl font-black text-secondary mb-1">
+              ₹{(currentBid / 100000).toFixed(1)}L
+            </div>
+            {leadingTeam && (
+              <div className="text-lg font-bold text-primary">
+                Leading: {mockTeams.find(t => t.id === leadingTeam)?.name}
+              </div>
+            )}
+            <p className="text-sm text-muted-foreground">
+              Base: ₹{(currentPlayer.basePrice / 100000).toFixed(1)}L | Increment: ₹{(bidIncrement / 100000).toFixed(1)}L
+            </p>
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {/* Player Card */}
-          <div className="flex items-center justify-center animate-scale-in">
-            <PlayerCard player={currentPlayer} isAnimated className="max-w-md w-full" />
+        <div className="space-y-6 max-w-7xl mx-auto">
+          {/* Large Player Card */}
+          <div className="flex justify-center animate-scale-in">
+            <PlayerCard player={currentPlayer} isAnimated className="max-w-4xl w-full" />
           </div>
 
-          {/* Auction Controls */}
-          <div className="space-y-6 animate-slide-up">
-            {/* Current Bid */}
-            <Card className="p-8 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated">
-              <h2 className="text-2xl font-bold mb-6 text-foreground">Current Bid</h2>
-              
-              <div className="text-center mb-6">
-                <div className="text-6xl font-black text-secondary mb-2">
-                  ₹{(currentBid / 100000).toFixed(1)}L
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Base Price: ₹{(currentPlayer.basePrice / 100000).toFixed(1)}L
-                </p>
-              </div>
-
-              <div className="flex gap-4 mb-6">
-                <Button
-                  onClick={handleBidDecrease}
-                  variant="outline"
-                  size="lg"
-                  className="flex-1"
-                  disabled={currentBid <= currentPlayer.basePrice}
+          {/* Team Bidding Grid */}
+          <Card className="p-6 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated">
+            <h2 className="text-2xl font-bold mb-6 text-foreground text-center">Click on Team to Bid</h2>
+            
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+              {mockTeams.map((team) => (
+                <button
+                  key={team.id}
+                  onClick={() => handleTeamBid(team.id)}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    leadingTeam === team.id
+                      ? "border-primary bg-primary/20 shadow-glow scale-105"
+                      : "border-border hover:border-primary/50 hover:scale-105"
+                  }`}
                 >
-                  <Minus className="h-5 w-5 mr-2" />
-                  Decrease
-                </Button>
-                <Button
-                  onClick={handleBidIncrease}
-                  variant="default"
-                  size="lg"
-                  className="flex-1 bg-gradient-primary hover:opacity-90"
-                >
-                  <Plus className="h-5 w-5 mr-2" />
-                  Increase
-                </Button>
-              </div>
+                  <div className="text-4xl mb-2">{team.logo}</div>
+                  <p className="font-bold text-xs text-foreground mb-1">{team.name}</p>
+                  {teamBids[team.id] && (
+                    <p className="text-xs text-primary font-bold">
+                      ₹{(teamBids[team.id] / 100000).toFixed(1)}L
+                    </p>
+                  )}
+                </button>
+              ))}
+            </div>
 
-              <p className="text-center text-sm text-muted-foreground">
-                Increment: ₹{(bidIncrement / 100000).toFixed(1)}L
-              </p>
-            </Card>
-
-            {/* Team Selection */}
-            <Card className="p-8 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated">
-              <h2 className="text-2xl font-bold mb-6 text-foreground">Select Team</h2>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                {mockTeams.map((team) => (
-                  <button
-                    key={team.id}
-                    onClick={() => setSelectedTeam(team.id)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
-                      selectedTeam === team.id
-                        ? "border-primary bg-primary/10 shadow-glow"
-                        : "border-border hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="text-3xl mb-2">{team.logo}</div>
-                    <p className="font-bold text-sm text-foreground">{team.name}</p>
-                  </button>
-                ))}
-              </div>
-
-              <div className="flex gap-4">
-                <Button
-                  onClick={handleUnsold}
-                  variant="outline"
-                  size="lg"
-                  className="flex-1"
-                >
-                  Unsold
-                </Button>
-                <Button
-                  onClick={handleSold}
-                  disabled={!selectedTeam}
-                  size="lg"
-                  className="flex-1 bg-gradient-accent hover:opacity-90"
-                >
-                  Sold!
-                </Button>
-              </div>
-            </Card>
-          </div>
+            <div className="flex gap-4 justify-center">
+              <Button
+                onClick={handleUnsold}
+                variant="outline"
+                size="lg"
+                className="px-12"
+              >
+                Unsold
+              </Button>
+              <Button
+                onClick={handleSold}
+                disabled={!leadingTeam}
+                size="lg"
+                className="px-12 bg-gradient-accent hover:opacity-90"
+              >
+                Sold!
+              </Button>
+            </div>
+          </Card>
         </div>
       </div>
 
@@ -166,7 +139,7 @@ const Auction = () => {
       <SoldCelebration
         show={showCelebration}
         playerName={currentPlayer.name}
-        teamName={mockTeams.find(t => t.id === selectedTeam)?.name || ""}
+        teamName={mockTeams.find(t => t.id === leadingTeam)?.name || ""}
         amount={currentBid}
       />
     </div>
