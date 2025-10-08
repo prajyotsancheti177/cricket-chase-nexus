@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Gavel } from "lucide-react";
-import stadiumBg from "@/assets/stadium-bg.jpg";
+import cricketAuctionBg from "@/assets/cricket-auction-bg.jpg";
 import placeholderImage from "@/assets/player-placeholder.jpg";
 
 const Auction = () => {
@@ -61,8 +61,8 @@ const Auction = () => {
     <div className="min-h-screen relative">
       {/* Background */}
       <div 
-        className="fixed inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: `url(${stadiumBg})` }}
+        className="fixed inset-0 bg-cover bg-center opacity-30"
+        style={{ backgroundImage: `url(${cricketAuctionBg})` }}
       />
       <div className="fixed inset-0 bg-gradient-dark" />
 
