@@ -8,6 +8,7 @@ import Auction from "./pages/Auction";
 import Teams from "./pages/Teams";
 import TeamDetail from "./pages/TeamDetail";
 import Players from "./pages/Players";
+import UploadPlayers from "./pages/UploadPlayers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/teams" element={<Teams />} />
             <Route path="/team/:teamId" element={<TeamDetail />} />
             <Route path="/players" element={<Players />} />
+            <Route path="/upload" element={<UploadPlayers />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

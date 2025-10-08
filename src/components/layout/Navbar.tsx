@@ -6,6 +6,7 @@ const navLinks = [
   { path: "/", label: "Live Auction" },
   { path: "/teams", label: "All Teams" },
   { path: "/players", label: "Players" },
+  { path: "/upload", label: "Upload Players" },
 ];
 
 export const Navbar = () => {

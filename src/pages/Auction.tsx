@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { mockPlayers, mockTeams } from "@/data/mockData";
-import { PlayerCard } from "@/components/auction/PlayerCard";
 import { SoldCelebration } from "@/components/auction/SoldCelebration";
+import { UnsoldAnimation } from "@/components/auction/UnsoldAnimation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Gavel } from "lucide-react";
 import stadiumBg from "@/assets/stadium-bg.jpg";
+import placeholderImage from "@/assets/player-placeholder.jpg";
 
 const Auction = () => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -13,6 +15,7 @@ const Auction = () => {
   const [leadingTeam, setLeadingTeam] = useState<string | null>(null);
   const [teamBids, setTeamBids] = useState<Record<string, number>>({});
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showUnsold, setShowUnsold] = useState(false);
 
   const currentPlayer = mockPlayers[currentPlayerIndex];
   const bidIncrement = 500000;
@@ -41,12 +44,17 @@ const Auction = () => {
   };
 
   const handleUnsold = () => {
-    if (currentPlayerIndex < mockPlayers.length - 1) {
-      setCurrentPlayerIndex(prev => prev + 1);
-      setCurrentBid(mockPlayers[currentPlayerIndex + 1].basePrice);
-      setLeadingTeam(null);
-      setTeamBids({});
-    }
+    setShowUnsold(true);
+    setTimeout(() => {
+      setShowUnsold(false);
+      // Move to next player
+      if (currentPlayerIndex < mockPlayers.length - 1) {
+        setCurrentPlayerIndex(prev => prev + 1);
+        setCurrentBid(mockPlayers[currentPlayerIndex + 1].basePrice);
+        setLeadingTeam(null);
+        setTeamBids({});
+      }
+    }, 2500);
   };
 
   return (
@@ -82,9 +90,48 @@ const Auction = () => {
         </div>
 
         <div className="space-y-6 max-w-7xl mx-auto">
-          {/* Large Player Card */}
+          {/* Player Display */}
           <div className="flex justify-center animate-scale-in">
-            <PlayerCard player={currentPlayer} isAnimated className="max-w-4xl w-full" />
+            <Card className="max-w-4xl w-full bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated overflow-hidden">
+              <div className="flex items-center gap-8 p-8">
+                {/* Player Photo - Smaller */}
+                <div className="relative flex-shrink-0">
+                  <div className="w-48 h-48 rounded-xl overflow-hidden border-4 border-primary shadow-glow">
+                    <img
+                      src={placeholderImage}
+                      alt={currentPlayer.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <Badge
+                    variant={
+                      currentPlayer.skill === "All-Rounder"
+                        ? "default"
+                        : currentPlayer.skill === "Batsman"
+                        ? "secondary"
+                        : "outline"
+                    }
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-sm font-bold shadow-lg"
+                  >
+                    {currentPlayer.skill}
+                  </Badge>
+                </div>
+
+                {/* Player Details */}
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-6xl font-black text-foreground">{currentPlayer.name}</h3>
+                  
+                  <div className="flex items-center gap-6">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Base Price</p>
+                      <p className="text-2xl font-bold text-foreground">
+                        ₹{(currentPlayer.basePrice / 100000).toFixed(1)}L
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
 
           {/* Team Bidding Grid */}
@@ -141,6 +188,12 @@ const Auction = () => {
         playerName={currentPlayer.name}
         teamName={mockTeams.find(t => t.id === leadingTeam)?.name || ""}
         amount={currentBid}
+      />
+
+      {/* Unsold Animation */}
+      <UnsoldAnimation
+        show={showUnsold}
+        playerName={currentPlayer.name}
       />
     </div>
   );
