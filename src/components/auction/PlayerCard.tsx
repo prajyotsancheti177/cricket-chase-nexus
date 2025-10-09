@@ -80,6 +80,13 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
             </div>
           )}
         </div>
+
+        {player.teamId && (
+          <div className="mt-4 pt-4 border-t border-border">
+            <p className="text-sm text-muted-foreground mb-1">Team</p>
+            <p className="text-lg font-bold text-accent">{player.teamId}</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { PlayerCard } from "@/components/auction/PlayerCard";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Users, Wallet, Trophy } from "lucide-react";
 
 const TeamDetail = () => {
@@ -148,24 +149,88 @@ const TeamDetail = () => {
           </div>
         </div>
 
-        {/* Players Section */}
-        <div>
+        {/* Players Table Section */}
+        <div className="mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-6">
             Squad Members ({teamPlayers.length})
           </h2>
           
           {teamPlayers.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {teamPlayers.map((player, index) => (
-                <div
-                  key={player.id}
-                  className="animate-scale-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <PlayerCard player={player} />
-                </div>
-              ))}
-            </div>
+            <Card className="p-6 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Player Name</th>
+                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Skill</th>
+                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Base Price</th>
+                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Sold Price</th>
+                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Price Distribution</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {teamPlayers.map((player, index) => {
+                      const soldPrice = player.soldPrice || 0;
+                      const maxPrice = Math.max(...teamPlayers.map(p => p.soldPrice || 0));
+                      const percentage = maxPrice > 0 ? (soldPrice / maxPrice) * 100 : 0;
+                      
+                      return (
+                        <tr 
+                          key={player.id} 
+                          className="border-b border-border/50 hover:bg-accent/5 transition-colors animate-fade-in"
+                          style={{ animationDelay: `${index * 0.05}s` }}
+                        >
+                          <td className="py-4 px-4">
+                            <p className="font-bold text-foreground">{player.name}</p>
+                          </td>
+                          <td className="py-4 px-4">
+                            <Badge variant={
+                              player.skill === "All-Rounder" ? "default" :
+                              player.skill === "Batsman" ? "secondary" : "outline"
+                            }>
+                              {player.skill}
+                            </Badge>
+                          </td>
+                          <td className="py-4 px-4">
+                            <p className="text-muted-foreground">
+                              ₹{(player.basePrice / 100000).toFixed(1)}L
+                            </p>
+                          </td>
+                          <td className="py-4 px-4">
+                            <p className="font-bold text-secondary text-lg">
+                              ₹{(soldPrice / 100000).toFixed(1)}L
+                            </p>
+                          </td>
+                          <td className="py-4 px-4">
+                            <div className="flex items-center gap-3">
+                              <div className="flex-1 bg-muted/20 rounded-full h-3 overflow-hidden">
+                                <div 
+                                  className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500"
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                              <span className="text-sm text-muted-foreground w-12 text-right">
+                                {percentage.toFixed(0)}%
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    <tr className="bg-accent/10 font-bold">
+                      <td className="py-4 px-4" colSpan={3}>
+                        <p className="text-foreground">Remaining Budget</p>
+                      </td>
+                      <td className="py-4 px-4" colSpan={2}>
+                        <p className="text-2xl font-black text-accent">
+                          ₹{(remainingBudget / 10000000).toFixed(2)}Cr
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Card>
           ) : (
             <Card className="p-12 text-center bg-card/80 backdrop-blur-sm">
               <p className="text-xl text-muted-foreground">No players in squad yet</p>
