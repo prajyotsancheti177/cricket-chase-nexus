@@ -31,32 +31,32 @@ const TeamDetail = () => {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 md:px-4 py-4 md:py-8">
         {/* Back Button */}
         <Link to="/teams">
-          <Button variant="outline" className="mb-8">
-            <ArrowLeft className="h-4 w-4 mr-2" />
+          <Button variant="outline" className="mb-4 md:mb-8 text-xs md:text-base" size="sm">
+            <ArrowLeft className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
             Back to Teams
           </Button>
         </Link>
 
         {/* Team Header */}
-        <div className="mb-12 animate-fade-in">
-          <div className="flex items-center gap-6 mb-8">
+        <div className="mb-6 md:mb-12 animate-fade-in">
+          <div className="flex items-center gap-3 md:gap-6 mb-4 md:mb-8">
             <div
-              className="text-7xl p-8 rounded-3xl shadow-elevated"
+              className="text-4xl md:text-7xl p-4 md:p-8 rounded-2xl md:rounded-3xl shadow-elevated"
               style={{ backgroundColor: team.color }}
             >
               {team.logo}
             </div>
             <div>
-              <h1 className="text-5xl font-black text-foreground mb-2">{team.name}</h1>
-              <p className="text-xl text-muted-foreground">Squad Details & Statistics</p>
+              <h1 className="text-2xl md:text-5xl font-black text-foreground mb-1 md:mb-2">{team.name}</h1>
+              <p className="text-sm md:text-xl text-muted-foreground">Squad Details & Statistics</p>
             </div>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
             {/* Budget Card */}
             <Card className="p-6 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated">
               <div className="flex items-center gap-3 mb-4">
@@ -150,22 +150,22 @@ const TeamDetail = () => {
         </div>
 
         {/* Players Table Section */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-6">
+        <div className="mb-6 md:mb-12">
+          <h2 className="text-xl md:text-3xl font-bold text-foreground mb-3 md:mb-6">
             Squad Members ({teamPlayers.length})
           </h2>
           
           {teamPlayers.length > 0 ? (
-            <Card className="p-6 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated overflow-hidden">
+            <Card className="p-3 md:p-6 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Player Name</th>
-                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Skill</th>
-                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Base Price</th>
-                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Sold Price</th>
-                      <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Price Distribution</th>
+                      <th className="text-left py-2 md:py-4 px-2 md:px-4 text-xs md:text-sm font-bold text-muted-foreground">Player Name</th>
+                      <th className="text-left py-2 md:py-4 px-2 md:px-4 text-xs md:text-sm font-bold text-muted-foreground">Skill</th>
+                      <th className="text-left py-2 md:py-4 px-2 md:px-4 text-xs md:text-sm font-bold text-muted-foreground">Base Price</th>
+                      <th className="text-left py-2 md:py-4 px-2 md:px-4 text-xs md:text-sm font-bold text-muted-foreground">Sold Price</th>
+                      <th className="text-left py-2 md:py-4 px-2 md:px-4 text-xs md:text-sm font-bold text-muted-foreground hidden md:table-cell">Price Distribution</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -180,28 +180,31 @@ const TeamDetail = () => {
                           className="border-b border-border/50 hover:bg-accent/5 transition-colors animate-fade-in"
                           style={{ animationDelay: `${index * 0.05}s` }}
                         >
-                          <td className="py-4 px-4">
-                            <p className="font-bold text-foreground">{player.name}</p>
+                          <td className="py-2 md:py-4 px-2 md:px-4">
+                            <p className="font-bold text-foreground text-xs md:text-base">{player.name}</p>
                           </td>
-                          <td className="py-4 px-4">
-                            <Badge variant={
-                              player.skill === "All-Rounder" ? "default" :
-                              player.skill === "Batsman" ? "secondary" : "outline"
-                            }>
+                          <td className="py-2 md:py-4 px-2 md:px-4">
+                            <Badge 
+                              variant={
+                                player.skill === "All-Rounder" ? "default" :
+                                player.skill === "Batsman" ? "secondary" : "outline"
+                              }
+                              className="text-xs"
+                            >
                               {player.skill}
                             </Badge>
                           </td>
-                          <td className="py-4 px-4">
-                            <p className="text-muted-foreground">
+                          <td className="py-2 md:py-4 px-2 md:px-4">
+                            <p className="text-muted-foreground text-xs md:text-base">
                               ₹{(player.basePrice / 100000).toFixed(1)}L
                             </p>
                           </td>
-                          <td className="py-4 px-4">
-                            <p className="font-bold text-secondary text-lg">
+                          <td className="py-2 md:py-4 px-2 md:px-4">
+                            <p className="font-bold text-secondary text-sm md:text-lg">
                               ₹{(soldPrice / 100000).toFixed(1)}L
                             </p>
                           </td>
-                          <td className="py-4 px-4">
+                          <td className="py-2 md:py-4 px-2 md:px-4 hidden md:table-cell">
                             <div className="flex items-center gap-3">
                               <div className="flex-1 bg-muted/20 rounded-full h-3 overflow-hidden">
                                 <div 
@@ -218,11 +221,11 @@ const TeamDetail = () => {
                       );
                     })}
                     <tr className="bg-accent/10 font-bold">
-                      <td className="py-4 px-4" colSpan={3}>
-                        <p className="text-foreground">Remaining Budget</p>
+                      <td className="py-2 md:py-4 px-2 md:px-4" colSpan={3}>
+                        <p className="text-foreground text-xs md:text-base">Remaining Budget</p>
                       </td>
-                      <td className="py-4 px-4" colSpan={2}>
-                        <p className="text-2xl font-black text-accent">
+                      <td className="py-2 md:py-4 px-2 md:px-4" colSpan={2}>
+                        <p className="text-lg md:text-2xl font-black text-accent">
                           ₹{(remainingBudget / 10000000).toFixed(2)}Cr
                         </p>
                       </td>

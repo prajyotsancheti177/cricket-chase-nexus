@@ -66,37 +66,37 @@ const Auction = () => {
       />
       <div className="fixed inset-0 bg-gradient-dark" />
 
-      <div className="relative container mx-auto px-4 py-8">
+      <div className="relative container mx-auto px-2 md:px-4 py-4 md:py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8 animate-fade-in">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-card border-2 border-primary shadow-glow">
-            <Gavel className="h-6 w-6 text-primary animate-glow-pulse" />
-            <span className="text-xl font-bold text-foreground">Live Auction - Player #{currentPlayerIndex + 1}</span>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:mb-8 gap-4 animate-fade-in">
+          <div className="inline-flex items-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-3 rounded-full bg-card border-2 border-primary shadow-glow">
+            <Gavel className="h-4 w-4 md:h-6 md:w-6 text-primary animate-glow-pulse" />
+            <span className="text-xs md:text-xl font-bold text-foreground">Live Auction - Player #{currentPlayerIndex + 1}</span>
           </div>
           
-          <div className="text-right">
-            <div className="text-8xl font-black text-secondary mb-2">
+          <div className="text-center md:text-right">
+            <div className="text-4xl md:text-8xl font-black text-secondary mb-1 md:mb-2">
               ₹{(currentBid / 100000).toFixed(1)}L
             </div>
             {leadingTeam && (
-              <div className="text-4xl font-black text-primary mb-1">
+              <div className="text-xl md:text-4xl font-black text-primary mb-0.5 md:mb-1">
                 {mockTeams.find(t => t.id === leadingTeam)?.name}
               </div>
             )}
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs md:text-sm text-muted-foreground">
               Base: ₹{(currentPlayer.basePrice / 100000).toFixed(1)}L | Increment: ₹{(bidIncrement / 100000).toFixed(1)}L
             </p>
           </div>
         </div>
 
-        <div className="space-y-6 max-w-7xl mx-auto">
+        <div className="space-y-3 md:space-y-6 max-w-7xl mx-auto">
           {/* Player Display */}
           <div className="flex justify-center animate-scale-in">
             <Card className="max-w-4xl w-full bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated overflow-hidden">
-              <div className="flex items-center gap-8 p-8">
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 p-4 md:p-8">
                 {/* Player Photo - Smaller */}
                 <div className="relative flex-shrink-0">
-                  <div className="w-48 h-48 rounded-xl overflow-hidden border-4 border-primary shadow-glow">
+                  <div className="w-32 h-32 md:w-48 md:h-48 rounded-xl overflow-hidden border-4 border-primary shadow-glow">
                     <img
                       src={placeholderImage}
                       alt={currentPlayer.name}
@@ -111,20 +111,20 @@ const Auction = () => {
                         ? "secondary"
                         : "outline"
                     }
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-sm font-bold shadow-lg"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-xs md:text-sm font-bold shadow-lg"
                   >
                     {currentPlayer.skill}
                   </Badge>
                 </div>
 
                 {/* Player Details */}
-                <div className="flex-1 space-y-4">
-                  <h3 className="text-6xl font-black text-foreground">{currentPlayer.name}</h3>
+                <div className="flex-1 space-y-2 md:space-y-4 text-center md:text-left">
+                  <h3 className="text-3xl md:text-6xl font-black text-foreground">{currentPlayer.name}</h3>
                   
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center justify-center md:justify-start gap-4 md:gap-6">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Base Price</p>
-                      <p className="text-2xl font-bold text-foreground">
+                      <p className="text-xs md:text-sm text-muted-foreground mb-1">Base Price</p>
+                      <p className="text-lg md:text-2xl font-bold text-foreground">
                         ₹{(currentPlayer.basePrice / 100000).toFixed(1)}L
                       </p>
                     </div>
@@ -135,24 +135,24 @@ const Auction = () => {
           </div>
 
           {/* Team Bidding Grid */}
-          <Card className="p-3 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated max-w-3xl mx-auto">
-            <h2 className="text-lg font-bold mb-3 text-foreground text-center">Click on Team to Bid</h2>
+          <Card className="p-2 md:p-3 bg-card/80 backdrop-blur-sm border-2 border-border shadow-elevated max-w-3xl mx-auto">
+            <h2 className="text-sm md:text-lg font-bold mb-2 md:mb-3 text-foreground text-center">Click on Team to Bid</h2>
             
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mb-3">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-1.5 md:gap-2 mb-2 md:mb-3">
               {mockTeams.map((team) => (
                 <button
                   key={team.id}
                   onClick={() => handleTeamBid(team.id)}
-                  className={`p-2 rounded-lg border-2 transition-all ${
+                  className={`p-1.5 md:p-2 rounded-lg border-2 transition-all ${
                     leadingTeam === team.id
                       ? "border-primary bg-primary/20 shadow-glow scale-105"
                       : "border-border hover:border-primary/50 hover:scale-105"
                   }`}
                 >
-                  <div className="text-2xl mb-1">{team.logo}</div>
-                  <p className="font-bold text-[10px] text-foreground mb-0.5">{team.name}</p>
+                  <div className="text-lg md:text-2xl mb-0.5 md:mb-1">{team.logo}</div>
+                  <p className="font-bold text-[8px] md:text-[10px] text-foreground mb-0.5">{team.name}</p>
                   {teamBids[team.id] && (
-                    <p className="text-[9px] text-primary font-bold">
+                    <p className="text-[7px] md:text-[9px] text-primary font-bold">
                       ₹{(teamBids[team.id] / 100000).toFixed(1)}L
                     </p>
                   )}
@@ -160,20 +160,20 @@ const Auction = () => {
               ))}
             </div>
 
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-2 md:gap-3 justify-center">
               <Button
                 onClick={handleUnsold}
                 variant="outline"
-                size="default"
-                className="px-8"
+                size="sm"
+                className="px-4 md:px-8 text-xs md:text-base"
               >
                 Unsold
               </Button>
               <Button
                 onClick={handleSold}
                 disabled={!leadingTeam}
-                size="default"
-                className="px-8 bg-gradient-accent hover:opacity-90"
+                size="sm"
+                className="px-4 md:px-8 text-xs md:text-base bg-gradient-accent hover:opacity-90"
               >
                 Sold!
               </Button>

@@ -17,52 +17,55 @@ const Players = () => {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-2 md:px-4 py-6 md:py-12">
         {/* Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center gap-3 mb-4 px-6 py-3 rounded-full bg-card border-2 border-primary shadow-glow">
-            <Users className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">Player Registry</span>
+        <div className="text-center mb-6 md:mb-12 animate-fade-in">
+          <div className="inline-flex items-center gap-2 md:gap-3 mb-3 md:mb-4 px-3 md:px-6 py-2 md:py-3 rounded-full bg-card border-2 border-primary shadow-glow">
+            <Users className="h-4 w-4 md:h-6 md:w-6 text-primary" />
+            <span className="text-sm md:text-xl font-bold text-foreground">Player Registry</span>
           </div>
-          <h1 className="text-5xl font-black bg-gradient-primary bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl md:text-5xl font-black bg-gradient-primary bg-clip-text text-transparent mb-2 md:mb-4">
             All Players
           </h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-sm md:text-xl text-muted-foreground mb-4 md:mb-8">
             {mockPlayers.length} registered players
           </p>
 
           {/* Stats */}
-          <div className="flex justify-center gap-8 mb-8">
+          <div className="flex justify-center gap-4 md:gap-8 mb-4 md:mb-8">
             <div className="text-center">
-              <p className="text-4xl font-black text-accent">{soldCount}</p>
-              <p className="text-sm text-muted-foreground">Sold</p>
+              <p className="text-2xl md:text-4xl font-black text-accent">{soldCount}</p>
+              <p className="text-xs md:text-sm text-muted-foreground">Sold</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-black text-destructive">{unsoldCount}</p>
-              <p className="text-sm text-muted-foreground">Unsold</p>
+              <p className="text-2xl md:text-4xl font-black text-destructive">{unsoldCount}</p>
+              <p className="text-xs md:text-sm text-muted-foreground">Unsold</p>
             </div>
           </div>
 
           {/* Filters */}
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-2 md:gap-4">
             <Button
               variant={filter === "All" ? "default" : "outline"}
               onClick={() => setFilter("All")}
-              className={filter === "All" ? "bg-gradient-primary" : ""}
+              className={`text-xs md:text-base ${filter === "All" ? "bg-gradient-primary" : ""}`}
+              size="sm"
             >
               All ({mockPlayers.length})
             </Button>
             <Button
               variant={filter === "Sold" ? "default" : "outline"}
               onClick={() => setFilter("Sold")}
-              className={filter === "Sold" ? "bg-gradient-accent" : ""}
+              className={`text-xs md:text-base ${filter === "Sold" ? "bg-gradient-accent" : ""}`}
+              size="sm"
             >
               Sold ({soldCount})
             </Button>
             <Button
               variant={filter === "Unsold" ? "default" : "outline"}
               onClick={() => setFilter("Unsold")}
-              className={filter === "Unsold" ? "bg-gradient-secondary" : ""}
+              className={`text-xs md:text-base ${filter === "Unsold" ? "bg-gradient-secondary" : ""}`}
+              size="sm"
             >
               Unsold ({unsoldCount})
             </Button>
@@ -70,7 +73,7 @@ const Players = () => {
         </div>
 
         {/* Players Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {filteredPlayers.map((player, index) => (
             <div
               key={player.id}

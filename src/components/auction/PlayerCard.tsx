@@ -25,7 +25,7 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
       )}
     >
       {/* Player Image */}
-      <div className="relative h-80 overflow-hidden">
+      <div className="relative h-48 md:h-80 overflow-hidden">
         <img
           src={placeholderImage}
           alt={player.name}
@@ -34,7 +34,7 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
         <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
         
         {/* Skill Badge */}
-        <div className="absolute top-4 right-4">
+        <div className="absolute top-2 md:top-4 right-2 md:right-4">
           <Badge
             variant={
               player.skill === "All-Rounder"
@@ -43,7 +43,7 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
                 ? "secondary"
                 : "outline"
             }
-            className="text-sm font-bold shadow-lg"
+            className="text-xs md:text-sm font-bold shadow-lg"
           >
             {player.skill}
           </Badge>
@@ -51,8 +51,8 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
 
         {/* Status Badge */}
         {player.status === "Sold" && (
-          <div className="absolute top-4 left-4">
-            <Badge className="bg-accent text-accent-foreground font-bold shadow-lg">
+          <div className="absolute top-2 md:top-4 left-2 md:left-4">
+            <Badge className="bg-accent text-accent-foreground font-bold shadow-lg text-xs md:text-sm">
               SOLD
             </Badge>
           </div>
@@ -60,21 +60,21 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
       </div>
 
       {/* Player Details */}
-      <div className="p-6 space-y-4">
-        <h3 className="text-6xl font-black text-foreground text-center">{player.name}</h3>
+      <div className="p-3 md:p-6 space-y-2 md:space-y-4">
+        <h3 className="text-2xl md:text-6xl font-black text-foreground text-center">{player.name}</h3>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
           <div>
-            <p className="text-sm text-muted-foreground mb-1">Base Price</p>
-            <p className="text-lg font-bold text-foreground">
+            <p className="text-xs md:text-sm text-muted-foreground mb-1">Base Price</p>
+            <p className="text-sm md:text-lg font-bold text-foreground">
               {formatPrice(player.basePrice)}
             </p>
           </div>
 
           {player.soldPrice && (
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Sold Price</p>
-              <p className="text-lg font-bold text-secondary">
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">Sold Price</p>
+              <p className="text-sm md:text-lg font-bold text-secondary">
                 {formatPrice(player.soldPrice)}
               </p>
             </div>
@@ -82,9 +82,9 @@ export const PlayerCard = ({ player, isAnimated, isSold, className }: PlayerCard
         </div>
 
         {player.teamId && (
-          <div className="mt-4 pt-4 border-t border-border">
-            <p className="text-sm text-muted-foreground mb-1">Team</p>
-            <p className="text-lg font-bold text-accent">{player.teamId}</p>
+          <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-border">
+            <p className="text-xs md:text-sm text-muted-foreground mb-1">Team</p>
+            <p className="text-sm md:text-lg font-bold text-accent">{player.teamId}</p>
           </div>
         )}
       </div>
